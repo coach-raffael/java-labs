@@ -1,0 +1,16 @@
+# Maven and javac output
+target/
+out/
+*.class
+
+# Data the app writes while you work
+shelfy.txt
+
+# Editors
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# Files you write yourself (sources, tests, FIXES.md, package.sh) are tracked on purpose,
+# so you can keep your work in your own fork.

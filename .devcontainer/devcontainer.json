@@ -1,0 +1,32 @@
+{
+  "name": "java-labs",
+  "dockerComposeFile": "compose.yaml",
+  "service": "lab",
+  "workspaceFolder": "/workspaces/java-labs",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "25",
+      "jdkDistro": "tem",
+      "installMaven": true,
+      "mavenVersion": "3.10.0"
+    }
+  },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb",
+    "storage": "32gb"
+  },
+  "forwardPorts": [8080],
+  "containerEnv": {
+    "DATABASE_URL": "jdbc:postgresql://db:5432/shelfy",
+    "DATABASE_USER": "shelfy",
+    "DATABASE_PASSWORD": "shelfy-lab",
+    "TEST_DATABASE_URL": "jdbc:postgresql://db:5432/shelfy"
+  },
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y --no-install-recommends postgresql-client fakeroot && java -version && mvn -v",
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["README.md"]
+    }
+  }
+}

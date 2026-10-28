@@ -1,0 +1,22 @@
+# GitHub Codespaces: the lab container plus PostgreSQL 18 as a second container (Module 00.1, 14.1).
+# Not a course file: Day 4 installs PostgreSQL on your VPS by hand. In a Codespace the database is
+# already here, reachable as host "db" (see containerEnv in devcontainer.json).
+services:
+  lab:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+    volumes:
+      - ..:/workspaces/java-labs:cached
+    command: sleep infinity
+    depends_on:
+      - db
+  db:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: shelfy
+      POSTGRES_PASSWORD: shelfy-lab
+      POSTGRES_DB: shelfy
+    volumes:
+      - pgdata:/var/lib/postgresql
+volumes:
+  pgdata:

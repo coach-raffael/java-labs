@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Starter for Module 17 and the lab of Module 18, Part A: shelfy 2.2 with the version number 2.3.0.
+     Module 17.1 adds the executable JAR (maven-jar-plugin manifest, dependencies in target/dist/lib).
+     Build and test:  ./mvnw verify
+     Run:             java -cp 'target/classes:target/dependency/*' shelfy.Main serve -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.coachraffael</groupId>
+  <artifactId>shelfy</artifactId>
+  <version>2.3.0</version>
+  <packaging>jar</packaging>
+  <name>shelfy</name>
+  <description>A small library that lends books and audiobooks. Example app of the course Java Programming Fundamentals.</description>
+
+  <properties>
+    <maven.compiler.release>25</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>6.1.3</junit.version>
+    <jackson.version>3.2.4</jackson.version>
+    <postgresql.version>42.7.14</postgresql.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- JSON (Module 13.4): Jackson 3 lives in the groupId tools.jackson.core and the packages tools.jackson.* -->
+    <dependency>
+      <groupId>tools.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <!-- JDBC driver (Module 14.3). Scope runtime: the code only uses java.sql, the driver is needed when it runs.
+         Without it on the classpath you get "No suitable driver found" (Module 14.7). -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.16.0</version>
+        <configuration>
+          <compilerArgs>
+            <arg>-Xlint:all,-serial</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.6</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.5.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.5.0</version>
+      </plugin>
+      <plugin>
+        <!-- Module 13.8: copies the dependencies to target/dependency, so that the run command can use
+             the classpath 'target/classes:target/dependency/*'. The executable JAR comes in Module 17. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.11.0</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/dependency</outputDirectory>
+              <includeScope>runtime</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
